@@ -8,7 +8,10 @@ step "Run a Script" {
         is_required = true
         properties = {
             Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Script.ScriptBody = "Write-Highlight \"This is the $Environment environment\""
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                $branch =  $OctopusParameters["Octopus.Release.Git.BranchName"]
+                Write-Highlight "This is the $Environment environment from the $branch branch."
+            EOT
             Octopus.Action.Script.ScriptSource = "Inline"
             Octopus.Action.Script.Syntax = "PowerShell"
         }
